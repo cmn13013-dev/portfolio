@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Ntumba Lobo — Researcher Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --surface: #111318;
+    --surface2: #181c23;
+    --border: #222733;
+    --accent: #5eead4;
+    --accent2: #818cf8;
+    --accent3: #f472b6;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --tag-bg: #1e2433;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── GRID NOISE TEXTURE ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(94,234,212,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 90%, rgba(129,140,248,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(10,12,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 8rem 4rem 4rem;
+    z-index: 1;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: center;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-title {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.3s;
+  }
+
+  .hero-desc {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    line-height: 1.8;
+    max-width: 520px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+  }
+
+  .hero-contacts {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.5s;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.4rem;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0c0f;
+  }
+  .btn-primary:hover { background: #2dd4bf; transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { color: var(--text); border-color: var(--muted); }
+
+  /* ─── STATS PANEL ─── */
+  .hero-stats {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-stats::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  .expertise-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 3px;
+  }
+  .tag.accent { border-color: var(--accent); color: var(--accent); }
+  .tag.purple { border-color: var(--accent2); color: var(--accent2); }
+  .tag.pink { border-color: var(--accent3); color: var(--accent3); }
+
+  /* ─── SECTIONS ─── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin-left: 1rem;
+  }
+
+  /* ─── PUBLICATIONS ─── */
+  .pub-list { display: flex; flex-direction: column; gap: 1.2rem; }
+
+  .pub-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.8rem 2rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pub-card:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .pub-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s;
+  }
+  .pub-card:hover::before { transform: scaleY(1); }
+
+  .pub-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    padding-top: 0.2rem;
+    white-space: nowrap;
+  }
+
+  .pub-body { }
+
+  .pub-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .pub-authors {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .pub-authors strong { color: var(--accent); font-weight: 500; }
+
+  .pub-journal {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent2);
+    letter-spacing: 0.05em;
+  }
+
+  .pub-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.7rem; }
+  .pub-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    background: var(--tag-bg);
+    color: var(--muted);
+  }
+
+  .pub-status {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    white-space: nowrap;
+    align-self: start;
+  }
+  .status-published { background: rgba(94,234,212,0.12); color: var(--accent); border: 1px solid rgba(94,234,212,0.3); }
+  .status-review { background: rgba(244,114,182,0.12); color: var(--accent3); border: 1px solid rgba(244,114,182,0.3); }
+
+  /* ─── RESEARCH AREAS ─── */
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+
+  .research-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.8rem;
+    transition: all 0.2s;
+  }
+
+  .research-card:hover {
+    border-color: var(--border);
+    background: var(--surface2);
+    transform: translateY(-3px);
+  }
+
+  .research-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .research-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+
+  .research-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ─── EDUCATION & EXPERIENCE ─── */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .timeline-item:last-child { border-bottom: none; }
+
+  .timeline-left {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    padding-top: 0.15rem;
+  }
+
+  .timeline-year {
+    color: var(--accent);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-place { color: var(--muted); font-size: 0.68rem; }
+
+  .timeline-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-sub {
+    font-size: 0.82rem;
+    color: var(--accent2);
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ─── CONTACT ─── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .contact-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .contact-item:hover { border-color: var(--accent); background: var(--surface2); }
+
+  .contact-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--tag-bg);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .contact-info .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .contact-info .value {
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-top: 0.1rem;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    section { padding: 4rem 1.5rem; }
+    .research-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .timeline-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .pub-card { grid-template-columns: 1fr; gap: 0.8rem; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    footer { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">N. Lobo</div>
+  <div class="nav-links">
+    <a href="#research">Research</a>
+    <a href="#publications">Publications</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-label">Multidisciplinary Physicist & Materials Researcher</div>
+      <h1 class="hero-name">Dr. Ntumba <em>Lobo</em></h1>
+      <p class="hero-title">Postdoctoral Researcher — Nuclear Physics & Materials Science</p>
+      <p class="hero-desc">
+        Investigating carrier dynamics in advanced semiconductor materials, nuclear reaction mechanisms,
+        and hydrogen storage systems. Operating across nuclear physics, semiconductor science, and energy materials
+        with dual master's degrees and publications in leading international journals.
+      </p>
+      <div class="hero-contacts">
+        <a class="btn btn-primary" href="#publications">View Publications</a>
+        <a class="btn btn-outline" href="#contact">Get in Touch</a>
+        <a class="btn btn-outline" href="your-cv.pdf" target="_blank">Download CV</a>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Publications</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Years Research</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Research Fields</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Countries</div>
+        </div>
+      </div>
+      <div class="expertise-tags">
+        <span class="tag accent">μ-PCD</span>
+        <span class="tag accent">Semiconductor Physics</span>
+        <span class="tag purple">Nuclear Reactions</span>
+        <span class="tag purple">PACE4 Simulations</span>
+        <span class="tag pink">Hydrogen Storage</span>
+        <span class="tag pink">MgH₂ Systems</span>
+        <span class="tag">XPS Analysis</span>
+        <span class="tag">Perovskites</span>
+        <span class="tag">Materials Testing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH AREAS -->
+<section id="research">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Research Areas</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="research-grid">
+    <div class="research-card">
+      <div class="research-icon">⚛️</div>
+      <div class="research-title">Semiconductor Carrier Dynamics</div>
+      <div class="research-desc">
+        Microwave photoconductance decay (μ-PCD) measurements of carrier lifetime and surface recombination velocity
+        in LiTaO₃, perovskite materials, and oxide semiconductors. XPS surface characterization.
+      </div>
+    </div>
+    <div class="research-card">
+      <div class="research-icon">☢️</div>
+      <div class="research-title">Heavy-Ion Nuclear Reactions</div>
+      <div class="research-desc">
+        Statistical model simulations (PACE4) of fusion mechanisms, compound nucleus formation,
+        and cross-section analysis for ²⁰Ne + ⁵⁹Co and ¹²C + ⁵⁹Co reaction systems.
+      </div>
+    </div>
+    <div class="research-card">
+      <div class="research-icon">🔋</div>
+      <div class="research-title">Hydrogen Storage Materials</div>
+      <div class="research-desc">
+        Development and characterization of MgH₂-based composites with ternary catalysts (TiH₂, TiO₂, Nb₂O₅).
+        DSC, PCT, XRD, and SEM analysis of hydrogen absorption/desorption kinetics.
+      </div>
+    </div>
+    <div class="research-card">
+      <div class="research-icon">🌞</div>
+      <div class="research-title">Perovskite Solar Cell Materials</div>
+      <div class="research-desc">
+        Carrier trapping effects, interface/surface recombination in metal halide perovskites
+        (MAPbI₃, MAPbBr₃, CsPbBr₃). CW laser mitigation strategies for accurate lifetime measurements.
+      </div>
+    </div>
+    <div class="research-card">
+      <div class="research-icon">🔬</div>
+      <div class="research-title">Materials Testing & Characterization</div>
+      <div class="research-desc">
+        X-ray photoelectron spectroscopy, X-ray diffraction, scanning electron microscopy,
+        and time-resolved photoluminescence for advanced material characterization.
+      </div>
+    </div>
+    <div class="research-card">
+      <div class="research-icon">📐</div>
+      <div class="research-title">Numerical Modelling</div>
+      <div class="research-desc">
+        Phenomenological frameworks for nuclear reaction cross-sections,
+        ambipolar diffusion modelling for carrier recombination dynamics,
+        and Kissinger activation energy analysis.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Publications</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="pub-list">
+
+    <!-- Published 2025 -->
+    <div class="pub-card">
+      <div class="pub-year">2025</div>
+      <div class="pub-body">
+        <div class="pub-title">Investigating surface recombination velocity and bulk carrier lifetime in lithium tantalate using micro-photoconductance decay techniques</div>
+        <div class="pub-authors"><strong>N. Lobo</strong>, L. H. Xiu, E. Zhang, M. Kato</div>
+        <div class="pub-journal">Chemical Physics Letters — Elsevier (Corrected Proof, 2025) · DOI: 10.1016/j.cplett.2025.142061</div>
+        <div class="pub-tags">
+          <span class="pub-tag">LiTaO₃</span>
+          <span class="pub-tag">μ-PCD</span>
+          <span class="pub-tag">XPS</span>
+          <span class="pub-tag">Surface Recombination</span>
+          <span class="pub-tag">Semiconductor</span>
+        </div>
+      </div>
+      <span class="pub-status status-published">Published</span>
+    </div>
+
+    <!-- Published 2024 -->
+    <div class="pub-card">
+      <div class="pub-year">2024</div>
+      <div class="pub-body">
+        <div class="pub-title">Mitigation of carrier trapping effects on carrier lifetime measurements with continuous-wave laser illumination for Pb-based metal halide perovskite materials</div>
+        <div class="pub-authors"><strong>N. Lobo</strong>, G. J. Matt, A. Osvet, S. Shrestha, A. Kanak, P. Fochuk, C. J. Brabec, M. Kato</div>
+        <div class="pub-journal">Journal of Applied Physics, 135, 074905 (2024) · DOI: 10.1063/5.0181654</div>
+        <div class="pub-tags">
+          <span class="pub-tag">Perovskite</span>
+          <span class="pub-tag">CW Laser</span>
+          <span class="pub-tag">Carrier Trapping</span>
+          <span class="pub-tag">μ-PCD</span>
+          <span class="pub-tag">Solar Cell</span>
+        </div>
+      </div>
+      <span class="pub-status status-published">Published</span>
+    </div>
+
+    <!-- Published 2022 -->
+    <div class="pub-card">
+      <div class="pub-year">2022</div>
+      <div class="pub-body">
+        <div class="pub-title">Trapping effects and surface/interface recombination of carrier recombination in single- or poly-crystalline metal halide perovskites</div>
+        <div class="pub-authors"><strong>N. Lobo</strong>, T. Kawane, G. J. Matt, A. Osvet, S. Shrestha, I. Levchuk, C. J. Brabec, A. Kanak, P. Fochuk, M. Kato</div>
+        <div class="pub-journal">Japanese Journal of Applied Physics, 61, 125503 (2022) · DOI: 10.35848/1347-4065/aca05b</div>
+        <div class="pub-tags">
+          <span class="pub-tag">Metal Halide Perovskite</span>
+          <span class="pub-tag">TR-PL</span>
+          <span class="pub-tag">μ-PCD</span>
+          <span class="pub-tag">Interface Recombination</span>
+        </div>
+      </div>
+      <span class="pub-status status-published">Published</span>
+    </div>
+
+    <!-- Published 2020 -->
+    <div class="pub-card">
+      <div class="pub-year">2020</div>
+      <div class="pub-body">
+        <div class="pub-title">Effect of TiH₂, TiO₂, Nb₂O₅ catalysts on hydrogen storage properties of magnesium hydride</div>
+        <div class="pub-authors"><strong>N. Lobo</strong>, A. Klimkowicz, A. Takasaki</div>
+        <div class="pub-journal">MRS Advances, Vol. 5 (2020), pp. 1059–1069 · DOI: 10.1557/adv.2020.29</div>
+        <div class="pub-tags">
+          <span class="pub-tag">MgH₂</span>
+          <span class="pub-tag">Ternary Catalyst</span>
+          <span class="pub-tag">PCT</span>
+          <span class="pub-tag">DSC</span>
+          <span class="pub-tag">Hydrogen Storage</span>
+        </div>
+      </div>
+      <span class="pub-status status-published">Published</span>
+    </div>
+
+    <!-- Published 2019 -->
+    <div class="pub-card">
+      <div class="pub-year">2019</div>
+      <div class="pub-body">
+        <div class="pub-title">Stability investigation of the γ-MgH₂ phase synthesized by high-energy ball milling</div>
+        <div class="pub-authors"><strong>N. Lobo</strong>, A. Takasaki, K. Mineo, A. Klimkowicz, K. Goc</div>
+        <div class="pub-journal">International Journal of Hydrogen Energy (2019) · DOI: 10.1016/j.ijhydene.2019.02.191</div>
+        <div class="pub-tags">
+          <span class="pub-tag">γ-MgH₂</span>
+          <span class="pub-tag">Mechanical Milling</span>
+          <span class="pub-tag">XRD</span>
+          <span class="pub-tag">Thermal Stability</span>
+          <span class="pub-tag">Hydrogen Storage</span>
+        </div>
+      </div>
+      <span class="pub-status status-published">Published</span>
+    </div>
+
+    <!-- Under Review (Nuclear Physics A manuscripts) -->
+    <div class="pub-card">
+      <div class="pub-year">2026</div>
+      <div class="pub-body">
+        <div class="pub-title">PACE4-Based Channel-by-Channel Exclusion Analysis of Fusion Reactions</div>
+        <div class="pub-authors"><strong>N. Lobo</strong> et al.</div>
+        <div class="pub-journal">Nuclear Physics A — Under Review · Manuscript NPA-D-26-00158</div>
+        <div class="pub-tags">
+          <span class="pub-tag">PACE4</span>
+          <span class="pub-tag">Fusion</span>
+          <span class="pub-tag">Cross-Section</span>
+          <span class="pub-tag">Nuclear Reaction</span>
+        </div>
+      </div>
+      <span class="pub-status status-review">Under Review</span>
+    </div>
+
+    <div class="pub-card">
+      <div class="pub-year">2026</div>
+      <div class="pub-body">
+        <div class="pub-title">Angular-Momentum-Windowed Phenomenological Framework for Nuclear Fusion Analysis</div>
+        <div class="pub-authors"><strong>N. Lobo</strong> et al.</div>
+        <div class="pub-journal">Nuclear Physics A — Under Review · Manuscript NPA-D-26-00134</div>
+        <div class="pub-tags">
+          <span class="pub-tag">Phenomenological Model</span>
+          <span class="pub-tag">Angular Momentum</span>
+          <span class="pub-tag">Heavy-Ion</span>
+          <span class="pub-tag">Nuclear Physics</span>
+        </div>
+      </div>
+      <span class="pub-status status-review">Under Review</span>
+    </div>
+
+    <div class="pub-card">
+      <div class="pub-year">2026</div>
+      <div class="pub-body">
+        <div class="pub-title">PACE4 Assessment Against CF-Dominated Channels in Heavy-Ion Fusion Reactions</div>
+        <div class="pub-authors"><strong>N. Lobo</strong> et al.</div>
+        <div class="pub-journal">Nuclear Physics A — Under Review · Manuscript NPA-D-26-00135</div>
+        <div class="pub-tags">
+          <span class="pub-tag">Complete Fusion</span>
+          <span class="pub-tag">PACE4</span>
+          <span class="pub-tag">Compound Nucleus</span>
+          <span class="pub-tag">Residual Nuclei</span>
+        </div>
+      </div>
+      <span class="pub-status status-review">Under Review</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE & EDUCATION -->
+<section id="experience">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Experience & Education</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-left">
+        <span class="timeline-year">2023 – Present</span>
+        <div class="timeline-place">Kinshasa, DRC</div>
+      </div>
+      <div>
+        <div class="timeline-title">Postdoctoral Researcher</div>
+        <div class="timeline-sub">Regional Nuclear Research Center of Kinshasa (CREN-K)</div>
+        <div class="timeline-desc">
+          Statistical model analysis of heavy-ion fusion reactions using PACE4 simulations.
+          Analysis of nuclear cross-section data for ²⁰Ne + ⁵⁹Co and ¹²C + ⁵⁹Co systems.
+          Development of phenomenological frameworks for compound nucleus reaction channels.
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-left">
+        <span class="timeline-year">2020 – 2023</span>
+        <div class="timeline-place">Nagoya, Japan</div>
+      </div>
+      <div>
+        <div class="timeline-title">Researcher — Semiconductor Physics</div>
+        <div class="timeline-sub">Nagoya Institute of Technology (NIT)</div>
+        <div class="timeline-desc">
+          μ-PCD characterization of LiTaO₃ and metal halide perovskite materials.
+          Investigated carrier trapping, surface/interface recombination, and bulk carrier lifetime dynamics.
+          Published in Chemical Physics Letters, J. Appl. Phys., and Jpn. J. Appl. Phys.
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-left">
+        <span class="timeline-year">2018 – 2020</span>
+        <div class="timeline-place">Tokyo, Japan</div>
+      </div>
+      <div>
+        <div class="timeline-title">M.Sc. Science & Engineering</div>
+        <div class="timeline-sub">Shibaura Institute of Technology (SIT)</div>
+        <div class="timeline-desc">
+          Research on MgH₂-based hydrogen storage materials with ternary catalytic systems.
+          Published in International Journal of Hydrogen Energy and MRS Advances.
+          Supported by JICA African Business Education (ABE Initiative).
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-left">
+        <span class="timeline-year">2014 – 2016</span>
+        <div class="timeline-place">Addis Ababa, Ethiopia</div>
+      </div>
+      <div>
+        <div class="timeline-title">M.Sc. Nuclear Physics</div>
+        <div class="timeline-sub">Addis Ababa University</div>
+        <div class="timeline-desc">
+          Advanced studies in nuclear physics, reactor theory, and radiation safety.
+          Foundation for subsequent experimental nuclear research at CREN-K.
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-left">
+        <span class="timeline-year">2010 – 2014</span>
+        <div class="timeline-place">Kinshasa, DRC</div>
+      </div>
+      <div>
+        <div class="timeline-title">Materials Testing Technician</div>
+        <div class="timeline-sub">Regional Nuclear Research Center of Kinshasa (CREN-K)</div>
+        <div class="timeline-desc">
+          Materials testing and experimental work within the national nuclear research framework.
+          Established foundational expertise in nuclear and materials characterization techniques.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Contact</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="contact-grid">
+    <div>
+      <div class="contact-intro">Open to collaborations, visiting positions & research partnerships.</div>
+      <p style="font-size:0.88rem; color:var(--muted); line-height:1.8;">
+        My research spans nuclear physics, semiconductor characterization, and clean energy materials.
+        I welcome opportunities for joint projects, conference presentations, and interdisciplinary work
+        across these domains.
+      </p>
+    </div>
+
+    <div class="contact-items">
+      <a class="contact-item" href="mailto:n.lobo.885@stn.nitech.ac.jp">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-info">
+          <div class="label">Email</div>
+          <div class="value">n.lobo.885@stn.nitech.ac.jp</div>
+        </div>
+      </a>
+      <a class="contact-item" href="https://orcid.org/your-orcid" target="_blank">
+        <div class="contact-icon">🔗</div>
+        <div class="contact-info">
+          <div class="label">ORCID</div>
+          <div class="value">Add your ORCID ID here</div>
+        </div>
+      </a>
+      <a class="contact-item" href="https://linkedin.com/in/your-profile" target="_blank">
+        <div class="contact-icon">💼</div>
+        <div class="contact-info">
+          <div class="label">LinkedIn</div>
+          <div class="value">linkedin.com/in/your-profile</div>
+        </div>
+      </a>
+      <a class="contact-item" href="https://scholar.google.com" target="_blank">
+        <div class="contact-icon">📚</div>
+        <div class="contact-info">
+          <div class="label">Google Scholar</div>
+          <div class="value">View all publications</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Ntumba Lobo · Multidisciplinary Physicist & Materials Researcher · Built with purpose
+</footer>
+
+</body>
+</html>
